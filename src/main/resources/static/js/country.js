@@ -1,25 +1,41 @@
 $(document).ready(function () {
     $("#detailContains").css("display", "none");
-    // when click the create button, show the detailContains
+    //新規の場合
     $("#selCreate").on('click', function () {
-        // clear all input
         $(':input', '#frmDetail')
             .not(':button, :submit, :reset, :hidden')
             .val(''); 
-        // show the detailContains
         $("#detailContains").css("display", "block");
-        // hide the queryContainer
         $("#queryContainer").css("display", "none");
+        $("#addBtn").css("display", "block");
+		$("#updateBtn").css("display", "none");
+		$("#delBtn").css("display", "none");
+		$("#queryInput").val('');
+		// 新規画面初期化
+		$("#countryid").val('');
+		$("#countrynanme").val('');
     });
 
-    // when click the update button, show the queryContainer
-    $("#selUpdate, #selDelete").on('click', function () {
-        // show the queryContainer
+    // 更新
+    $("#selUpdate").on('click', function () {
         $("#queryContainer").css("display", "block");
-        // hide the detailContains
         $("#detailContains").css("display", "none");
-        // set the form action for update
         $("#frmDetail").attr("action", "/UpdateCountry");
+        $("#addBtn").css("display", "none");
+		$("#updateBtn").css("display", "block");
+		$("#delBtn").css("display", "none");
+		$("#queryInput").val('');
+    });
+    
+    // 削除
+    $("#selDelete").on('click', function () {
+        $("#queryContainer").css("display", "block");
+        $("#detailContains").css("display", "none");
+        $("#frmDetail").attr("action", "/UpdateCountry");
+        $("#addBtn").css("display", "none");
+		$("#updateBtn").css("display", "none");
+		$("#delBtn").css("display", "block");
+		$("#queryInput").val('');
     });
 
     // when click the return button, hide the detailContains
@@ -30,6 +46,7 @@ $(document).ready(function () {
         $("#detailContains").css("display", "none");
     });
 
+	//検索
     $("#queryBtn").on('click', function () {
         // use ajax to post data to controller
         // recived the data from controller with json
@@ -41,12 +58,61 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 $("#detailContains").css("display", "block");
-                // show the data in the detailContains
-                $("#countryCodeInput").val(data.mstcountrycd);
-                $("#countryNameInput").val(data.mstcountrynanme);
+                $("#countryid").val(data.mstcountrycd);
+                $("#countrynanme").val(data.mstcountrynanme);
             },
             error: function (e) {
-                alert("error");
+                alert(e.responseJSON.message);
+            }
+        });
+    });
+    
+    //新規の場合
+    $("#addBtn").on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "/country/addCountry",        //  <- controller function name
+            data: $("#frmDetail").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                alert("success");
+            },
+            error: function (e) {
+                alert(e.responseJSON.message);
+            }
+        });
+    });
+    
+     
+    //更新の場合
+    $("#updateBtn").on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "/country/updateCountry",        //  <- controller function name
+            data: $("#frmDetail").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                alert("success");
+            },
+            error: function (e) {
+                alert(e.responseJSON.message);
+            }
+        });
+    });
+    
+      
+    //削除の場合
+    $("#delBtn").on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "/country/delete",        //  <- controller function name
+            data: $("#frmDetail").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                alert("success");
+            },
+            error: function (e) {
+                alert(e.responseJSON.message);
             }
         });
     });

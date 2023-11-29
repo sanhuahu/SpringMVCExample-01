@@ -22,9 +22,8 @@ $(document).ready(function () {
     getRecord();
   });
 
-  // event handler for previous button
+ /* // event handler for previous button
   $("#oprateBtn").on("click", function () {
-    // show next selected row
     if (currentRow < selectedRow) {
       var rowData = table.rows({ selected: true }).ids();
       // 选中行的数据, 处理成功后, 修改状态
@@ -45,7 +44,44 @@ $(document).ready(function () {
     } else {
       // close modal
     }
-  });
+  });*/
+  
+  $("#oprateBtn").on("click", function() {
+		$.ajax({
+			type: "POST",
+			url: "/prov/updateRecord",
+			data: $("#detailForm").serialize(),
+			datatype: "json",
+			success: function(dataForm) {
+				var dataFormJson = JSON.parse(dataForm);
+				if (currentRow+1 <= selectedRow) {
+					var rowData = table.rows({ selected: true }).ids();
+					// 选中行的数据, 处理成功后, 修改状态
+					var row = table.row("#" + rowData[currentRow]);
+					var data = row.data();
+					data.sts = "処理済";
+					data.mstcountrycd = dataFormJson.mstcountrycd;
+					data.provcode = dataFormJson.provcode;
+					data.provname = dataFormJson.provname;
+					row.data(data).draw();
+
+					row.nodes().to$().addClass("disabled");
+					currentRow++;
+					
+					if (currentRow == selectedRow) {
+						$("#closeModalBtn").click();
+					} else {
+						$("#currSpan").text(currentRow + 1);
+					    getRecord();
+					}
+				}
+			},
+			error: function(e) {
+				data.sts = "エラー";
+				alert("Error: " + e);
+			},
+		});
+	});
 });
 
 // get record
@@ -58,12 +94,13 @@ function getRecord() {
     datatype: "json",
     success: function (data) {
       var item = $.parseJSON(data);
-      $("#countryCd").val(item.mstcountrycd);
-      $("#provCd").val(item.provcode);
-      $("#provName").val(item.provname);
+      $("#mstcountrycd").val(item.mstcountrycd);
+      $("#provcode").val(item.provcode);
+      $("#provname").val(item.provname);
     },
     error: function (e) {
-      alert("Error: " + e);
+		alert("Error: ");
+      //alert("Error: " + e);
     },
   });
   return;
@@ -122,7 +159,7 @@ function getTableDatas() {
       table.rows.add(nodes).draw();
     },
     error: function (e) {
-      alert("Error: " + e);
+      alert(e.responseJSON.message);
     },
   });
 }

@@ -86,17 +86,19 @@
             <div class="collapse show" id="collapseDetail">
                 <div class="card card-body">
                     <!-- th:object -->
-                    <form id="frmDetail" action="#" method="post">
+                    <form id="frmDetail" action="@{/Country/addCountry}" method="post" th:object="${countryAddForm}">
                         <div class="mb-3">
-                            <label for="countryCodeInput" class="form-label">Email address</label>
-                            <input type="text" class="form-control" id="countryCodeInput" placeholder="country code">
+                            <label for="countrycd" class="form-label">国家ID</label>
+                            <input type="text" class="form-control" id="countryid" name="countryid" placeholder="country code">
                         </div>
                         <div class="mb-3">
-                            <label for="countryNameInput" class="form-label">Example textarea</label>
-                            <input type="text" class="form-control" id="countryNameInput"></input>
+                            <label for="countrynanme" class="form-label">国家名</label>
+                            <input type="text" class="form-control" id="countrynanme" name="countrynanme"></input>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button id="addBtn" type="button" class="btn btn-primary me-md-2">登録</button>
                             <button id="updateBtn" type="button" class="btn btn-primary me-md-2">更新</button>
+                            <button id="delBtn" type="button" class="btn btn-primary me-md-2">削除</button>
                             <button id="returnBtn" type="button" class="btn btn-secondary ">返回</button>
                         </div>
                     </form>
