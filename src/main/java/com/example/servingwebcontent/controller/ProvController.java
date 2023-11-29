@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -81,9 +82,7 @@ public class ProvController {
 	public String updateRecord(ProvForm provForm) {
 
 		ProvinceEntity provinceEntity = new ProvinceEntity();
-		provinceEntity.setMstcountrycd(provForm.getMstcountrycd());
-		provinceEntity.setProvcode(provForm.getProvcode());
-		provinceEntity.setProvname(provForm.getProvname());
+		BeanUtils.copyProperties(provForm, provinceEntity);
 
 		int updateCount = mapper.updateByPrimaryKey(provinceEntity);
 

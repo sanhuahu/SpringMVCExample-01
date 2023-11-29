@@ -21,30 +21,6 @@ $(document).ready(function () {
     $("#totalSpan").text(selectedRow);
     getRecord();
   });
-
- /* // event handler for previous button
-  $("#oprateBtn").on("click", function () {
-    if (currentRow < selectedRow) {
-      var rowData = table.rows({ selected: true }).ids();
-      // 选中行的数据, 处理成功后, 修改状态
-      var row = table.row("#" + rowData[currentRow]);
-      var data = row.data();
-      data.sts = "已处理";
-      row.data(data).draw();
-      // 设置该行不可选
-      row.nodes().to$().addClass("disabled");
-
-      currentRow++;
-      if (currentRow == selectedRow) {
-        // close modal
-        $("#closeModalBtn").click();
-      }
-      $("#currSpan").text(currentRow + 1);
-      getRecord();
-    } else {
-      // close modal
-    }
-  });*/
   
   $("#oprateBtn").on("click", function() {
 		$.ajax({
